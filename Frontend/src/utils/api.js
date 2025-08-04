@@ -366,30 +366,221 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             total: filteredTests.length
           };
         } else if (url.includes('/questions')) {
-          return {
-            success: true,
-            questions: [
-              {
-                _id: '1',
-                questionText: 'Read the following passage and answer the question that follows. The rapid advancement of artificial intelligence...',
+          const sectionFilter = new URLSearchParams(url.split('?')[1] || '').get('section');
+
+          const allQuestions = [];
+
+          // VARC Questions (150 questions)
+          const varcQuestions = [
+            // Reading Comprehension Questions
+            {
+              questionText: "Read the following passage and answer the question that follows.\n\nThe digital revolution has fundamentally altered the way we consume information. Social media platforms have become the primary source of news for millions of people worldwide. However, this shift has raised concerns about the quality and reliability of information being disseminated.\n\nWhat is the main concern raised in the passage?",
+              options: [
+                "The speed of information dissemination",
+                "The quality and reliability of information on social media",
+                "The cost of digital platforms",
+                "The accessibility of information"
+              ],
+              correctAnswer: 1,
+              topic: "Reading Comprehension",
+              difficulty: "Medium"
+            },
+            {
+              questionText: "Choose the word that is most similar in meaning to 'UBIQUITOUS':",
+              options: ["Rare", "Omnipresent", "Specific", "Limited"],
+              correctAnswer: 1,
+              topic: "Vocabulary",
+              difficulty: "Hard"
+            },
+            {
+              questionText: "Identify the grammatically correct sentence:",
+              options: [
+                "Neither of the students have completed their assignments.",
+                "Neither of the students has completed their assignment.",
+                "Neither of the students has completed his assignment.",
+                "Neither of the students have completed his assignments."
+              ],
+              correctAnswer: 2,
+              topic: "Grammar",
+              difficulty: "Medium"
+            },
+            {
+              questionText: "In the sentence 'The committee, along with its chairperson, _____ the proposal', the correct verb is:",
+              options: ["approve", "approves", "are approving", "have approved"],
+              correctAnswer: 1,
+              topic: "Subject-Verb Agreement",
+              difficulty: "Medium"
+            },
+            {
+              questionText: "Choose the option that best completes the analogy: BOOK : LIBRARY :: ?",
+              options: [
+                "Painting : Museum",
+                "Student : School",
+                "Doctor : Hospital",
+                "All of the above"
+              ],
+              correctAnswer: 3,
+              topic: "Analogies",
+              difficulty: "Easy"
+            }
+          ];
+
+          // Add more VARC questions with different topics
+          for (let i = 0; i < 50; i++) {
+            varcQuestions.forEach((baseQ, idx) => {
+              allQuestions.push({
+                _id: `varc_${i * 5 + idx + 1}`,
+                questionText: baseQ.questionText,
                 section: 'VARC',
                 questionType: 'Multiple Choice',
-                difficulty: 'Medium',
-                topic: 'Reading Comprehension',
+                difficulty: baseQ.difficulty,
+                topic: baseQ.topic,
                 marks: { positive: 3, negative: -1 },
-                options: ['Option A', 'Option B', 'Option C', 'Option D']
-              },
-              {
-                _id: '2',
-                questionText: 'A company manufactures two types of products A and B. The profit from product A is 40% and from product B is 60%...',
+                options: baseQ.options,
+                correctAnswer: baseQ.correctAnswer,
+                explanation: `This tests your understanding of ${baseQ.topic.toLowerCase()}.`,
+                timeEstimate: 120,
+                createdAt: `2024-01-${(i % 30) + 1}T00:00:00.000Z`
+              });
+            });
+          }
+
+          // QA Questions (150 questions)
+          const qaQuestions = [
+            {
+              questionText: "If a shopkeeper sells an article at 20% profit and the cost price is ₹500, what is the selling price?",
+              options: ["₹550", "₹600", "₹650", "₹700"],
+              correctAnswer: 1,
+              topic: "Profit and Loss",
+              difficulty: "Easy"
+            },
+            {
+              questionText: "The compound interest on ₹8000 at 15% per annum for 2 years compounded annually is:",
+              options: ["₹2520", "₹2760", "₹2880", "₹3000"],
+              correctAnswer: 1,
+              topic: "Compound Interest",
+              difficulty: "Medium"
+            },
+            {
+              questionText: "If 3x + 2y = 12 and 2x + 3y = 13, then x + y = ?",
+              options: ["4", "5", "6", "7"],
+              correctAnswer: 1,
+              topic: "Linear Equations",
+              difficulty: "Medium"
+            },
+            {
+              questionText: "A train travels 360 km in 4 hours. What is its average speed in m/s?",
+              options: ["20", "25", "30", "35"],
+              correctAnswer: 1,
+              topic: "Speed Distance Time",
+              difficulty: "Easy"
+            },
+            {
+              questionText: "The area of a circle with radius 7 cm is: (Take π = 22/7)",
+              options: ["154 cm²", "144 cm²", "164 cm²", "174 cm²"],
+              correctAnswer: 0,
+              topic: "Geometry",
+              difficulty: "Easy"
+            }
+          ];
+
+          for (let i = 0; i < 30; i++) {
+            qaQuestions.forEach((baseQ, idx) => {
+              allQuestions.push({
+                _id: `qa_${i * 5 + idx + 1}`,
+                questionText: baseQ.questionText,
                 section: 'QA',
                 questionType: 'Multiple Choice',
-                difficulty: 'Hard',
-                topic: 'Profit and Loss',
+                difficulty: baseQ.difficulty,
+                topic: baseQ.topic,
                 marks: { positive: 3, negative: -1 },
-                options: ['150', '200', '250', '300']
-              }
-            ]
+                options: baseQ.options,
+                correctAnswer: baseQ.correctAnswer,
+                explanation: `This is a ${baseQ.topic.toLowerCase()} problem. Remember the formula and apply step by step.`,
+                timeEstimate: 90,
+                createdAt: `2024-01-${(i % 30) + 1}T00:00:00.000Z`
+              });
+            });
+          }
+
+          // DILR Questions (150 questions)
+          const dilrQuestions = [
+            {
+              questionText: "Study the following data:\nCompany A: Sales in 2022 - ₹50 lakhs, Growth rate - 20%\nCompany B: Sales in 2022 - ₹40 lakhs, Growth rate - 25%\nWhat will be the combined sales of both companies in 2023?",
+              options: ["₹110 lakhs", "₹115 lakhs", "₹120 lakhs", "₹125 lakhs"],
+              correctAnswer: 0,
+              topic: "Data Interpretation",
+              difficulty: "Medium"
+            },
+            {
+              questionText: "In a sequence: 2, 6, 12, 20, 30, ?, what is the next number?",
+              options: ["40", "42", "44", "46"],
+              correctAnswer: 1,
+              topic: "Number Series",
+              difficulty: "Medium"
+            },
+            {
+              questionText: "If all cats are animals and some animals are dogs, then:",
+              options: [
+                "All cats are dogs",
+                "Some cats are dogs",
+                "Some dogs are cats",
+                "None of the above can be concluded"
+              ],
+              correctAnswer: 3,
+              topic: "Logical Reasoning",
+              difficulty: "Hard"
+            },
+            {
+              questionText: "A cube is painted red on all faces and then cut into 64 smaller cubes. How many small cubes will have exactly 2 faces painted?",
+              options: ["12", "24", "36", "48"],
+              correctAnswer: 1,
+              topic: "Cubes and Dice",
+              difficulty: "Hard"
+            },
+            {
+              questionText: "Six friends A, B, C, D, E, F are sitting in a circle. A is between B and F. C is opposite to A. Where is D sitting?",
+              options: ["Next to C", "Opposite to B", "Between C and E", "Cannot be determined"],
+              correctAnswer: 3,
+              topic: "Seating Arrangement",
+              difficulty: "Medium"
+            }
+          ];
+
+          for (let i = 0; i < 30; i++) {
+            dilrQuestions.forEach((baseQ, idx) => {
+              allQuestions.push({
+                _id: `dilr_${i * 5 + idx + 1}`,
+                questionText: baseQ.questionText,
+                section: 'DILR',
+                questionType: 'Multiple Choice',
+                difficulty: baseQ.difficulty,
+                topic: baseQ.topic,
+                marks: { positive: 3, negative: -1 },
+                options: baseQ.options,
+                correctAnswer: baseQ.correctAnswer,
+                explanation: `This ${baseQ.topic.toLowerCase()} question requires analytical thinking and logical deduction.`,
+                timeEstimate: 180,
+                createdAt: `2024-01-${(i % 30) + 1}T00:00:00.000Z`
+              });
+            });
+          }
+
+          // Filter questions by section if provided
+          let filteredQuestions = allQuestions;
+          if (sectionFilter && sectionFilter !== 'all') {
+            filteredQuestions = allQuestions.filter(q => q.section === sectionFilter);
+          }
+
+          return {
+            success: true,
+            questions: filteredQuestions,
+            total: filteredQuestions.length,
+            sections: {
+              'VARC': allQuestions.filter(q => q.section === 'VARC').length,
+              'QA': allQuestions.filter(q => q.section === 'QA').length,
+              'DILR': allQuestions.filter(q => q.section === 'DILR').length
+            }
           };
         }
       } else if (url.includes('/api/dev/login')) {
