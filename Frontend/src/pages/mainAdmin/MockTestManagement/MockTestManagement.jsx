@@ -160,11 +160,12 @@ const MockTestManagement = () => {
 
       const data = await fetchWithErrorHandling(`/api/admin/mock-tests/tests?${queryParams}`);
 
-      if (data && data.success) {
-        setTests(data.tests || []);
+      if (data && data.success && data.tests) {
+        setTests(data.tests);
+        console.log('✅ Tests loaded successfully:', data.tests.length, 'tests');
       } else {
-        console.error('Failed to fetch tests:', data?.message || 'Unknown error');
-        throw new Error('API returned invalid data');
+        console.error('Failed to fetch tests:', data?.message || 'Invalid response structure');
+        throw new Error(data?.message || 'API returned invalid data');
       }
     } catch (error) {
       console.warn('Backend unavailable, using mock data:', error.message);
