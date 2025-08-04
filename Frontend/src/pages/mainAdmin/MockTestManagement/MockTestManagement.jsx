@@ -1528,6 +1528,7 @@ const MockTestManagement = () => {
 
       {showCreateModal && activeTab === 'series' && <CreateSeriesModal />}
       {showCreateModal && activeTab === 'tests' && <CreateTestModal />}
+      {showCreateModal && activeTab === 'questions' && <CreateQuestionModal />}
     </div>
   );
 };
