@@ -254,7 +254,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             ]
           };
         } else if (url.includes('/tests')) {
-          console.log('🎯 Returning mock tests data');
+          console.log('��� Returning mock tests data');
           // Generate tests based on series filter
           const seriesId = new URLSearchParams(url.split('?')[1] || '').get('seriesId');
 
@@ -622,6 +622,27 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
       // Handle CRUD operations for admin endpoints
       if (options.method === 'POST' && url.includes('/api/admin/mock-tests/')) {
         console.log('🔄 Mock POST operation for:', url);
+
+        if (url.includes('/questions')) {
+          // Parse the question data from the request body
+          let questionData = {};
+          try {
+            questionData = JSON.parse(options.body);
+          } catch (e) {
+            questionData = {};
+          }
+
+          return {
+            success: true,
+            message: 'Question created successfully (demo mode)',
+            question: {
+              _id: Date.now().toString(),
+              ...questionData,
+              createdAt: new Date().toISOString()
+            }
+          };
+        }
+
         return {
           success: true,
           message: 'Created successfully (demo mode)',
