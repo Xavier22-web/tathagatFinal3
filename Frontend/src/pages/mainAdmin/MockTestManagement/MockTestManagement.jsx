@@ -105,9 +105,49 @@ const MockTestManagement = () => {
     }
   };
 
+  // Fetch tests
+  const fetchTests = async () => {
+    setLoading(true);
+    try {
+      const adminToken = localStorage.getItem('adminToken');
+      const queryParams = new URLSearchParams({
+        page: 1,
+        limit: 20,
+        seriesId: filters.seriesId !== 'all' ? filters.seriesId : '',
+        search: filters.search
+      });
+
+      const response = await fetch(`/api/admin/mock-tests/tests?${queryParams}`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.success) {
+        setTests(data.tests || []);
+      } else {
+        console.error('Failed to fetch tests:', data.message);
+        setTests([]);
+      }
+    } catch (error) {
+      console.error('Error fetching tests:', error);
+      setTests([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'series') {
       fetchSeries();
+    } else if (activeTab === 'tests') {
+      fetchTests();
     } else if (activeTab === 'questions') {
       fetchQuestions();
     }
