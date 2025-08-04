@@ -254,6 +254,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             ]
           };
         } else if (url.includes('/tests')) {
+          console.log('🎯 Returning mock tests data');
           // Generate tests based on series filter
           const seriesId = new URLSearchParams(url.split('?')[1] || '').get('seriesId');
 
