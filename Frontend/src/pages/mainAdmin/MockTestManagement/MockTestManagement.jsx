@@ -1364,6 +1364,24 @@ const MockTestManagement = () => {
 
   return (
     <div className="mocktest-management">
+      {demoMode && (
+        <div className="demo-mode-banner">
+          <div className="demo-banner-content">
+            <div className="demo-icon">🚀</div>
+            <div className="demo-text">
+              <strong>Demo Mode Active</strong>
+              <p>Backend endpoints not available - using comprehensive mock data with 5 series, 59+ tests, and 500+ questions</p>
+            </div>
+            <button
+              className="demo-close-btn"
+              onClick={() => setDemoMode(false)}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="management-header">
         <div className="header-content">
           <h1>Mock Test Management</h1>
