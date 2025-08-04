@@ -880,6 +880,7 @@ const MockTestManagement = () => {
           </button>
           <button onClick={() => {
             if (activeTab === 'series') fetchSeries();
+            else if (activeTab === 'tests') fetchTests();
             else if (activeTab === 'questions') fetchQuestions();
           }} className="refresh-btn">
             <FiRefreshCw /> Refresh
