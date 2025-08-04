@@ -32,7 +32,8 @@ const Login = ({ onClose, setUser }) => {
       setToastMessage("");
 
       console.log("🔍 Starting demo login...");
-      const response = await axios.post("/api/dev/login");
+      const { fetchWithErrorHandling } = await import('../../utils/api');
+      const response = await fetchWithErrorHandling("/api/dev/login", { method: 'POST' });
 
       if (response.data.success && response.data.token) {
         // Store authentication data
