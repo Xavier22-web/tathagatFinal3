@@ -94,8 +94,11 @@ const MOCK_DATA = {
 export const fetchWithErrorHandling = async (url, options = {}) => {
   console.log('🚀 API Call:', options.method || 'GET', url);
 
-  // Immediate fallback for admin mock test endpoints
-  if (url.includes('/api/admin/mock-tests/')) {
+  // IMMEDIATE FALLBACK - Check for admin mock test endpoints FIRST
+  const isAdminMockTestUrl = url.includes('/api/admin/mock-tests/');
+  console.log('🔍 Is admin mock test URL?', isAdminMockTestUrl, 'URL:', url);
+
+  if (isAdminMockTestUrl) {
     console.log('🎯 Admin mock test endpoint detected - returning mock data immediately');
     console.log('🔍 Full URL:', url);
     console.log('🔍 URL contains /series:', url.includes('/series'));
