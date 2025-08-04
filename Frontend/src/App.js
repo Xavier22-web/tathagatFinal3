@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import axios from "axios";
+import DevNotification from "./components/DevNotification/DevNotification";
 
 
 
