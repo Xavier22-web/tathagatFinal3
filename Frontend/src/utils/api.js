@@ -137,6 +137,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
       if (url.includes('/api/courses/student/published-courses')) {
         return MOCK_DATA.courses;
       } else if (url.includes('/api/mock-tests/series')) {
+        console.log('🔄 Returning mock data for mock test series');
         return MOCK_DATA.mockTests;
       } else if (url.includes('/api/dev/login')) {
         return MOCK_DATA.devLogin;
