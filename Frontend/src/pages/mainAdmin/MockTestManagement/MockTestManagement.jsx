@@ -942,6 +942,32 @@ const MockTestManagement = () => {
           </select>
         )}
 
+        {activeTab === 'tests' && (
+          <>
+            <select
+              value={filters.seriesId}
+              onChange={(e) => setFilters(prev => ({ ...prev, seriesId: e.target.value }))}
+            >
+              <option value="all">All Series</option>
+              {series.map(s => (
+                <option key={s._id} value={s._id}>{s.title}</option>
+              ))}
+            </select>
+            {selectedSeriesId && (
+              <button
+                className="back-btn"
+                onClick={() => {
+                  setActiveTab('series');
+                  setSelectedSeriesId(null);
+                  setFilters(prev => ({ ...prev, seriesId: 'all' }));
+                }}
+              >
+                ← Back to Series
+              </button>
+            )}
+          </>
+        )}
+
         {activeTab === 'questions' && (
           <select
             value={filters.section || 'all'}
