@@ -545,7 +545,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
           };
           console.log('🎯 Mock tests result:', result.tests.length, 'tests for series:', seriesId || 'all');
           return result;
-        } else if (url.includes('/questions')) {
+        } else if (url.includes('/questions') || url.includes('/questions?')) {
           console.log('🎯 Returning mock questions data');
           const sectionFilter = new URLSearchParams(url.split('?')[1] || '').get('section');
 
