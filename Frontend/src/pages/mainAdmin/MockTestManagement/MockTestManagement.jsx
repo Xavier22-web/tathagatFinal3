@@ -672,16 +672,35 @@ const MockTestManagement = () => {
         <div className="card-actions">
           <div className="action-buttons">
             <button
+              className="action-btn primary"
+              onClick={() => {
+                setActiveTab('tests');
+                setFilters(prev => ({ ...prev, seriesId: seriesItem._id }));
+                setSelectedSeriesId(seriesItem._id);
+              }}
+              title="View Tests"
+            >
+              <FiPlay />
+            </button>
+            <button
               className="action-btn"
               onClick={() => toggleSeriesPublication(seriesItem._id, !seriesItem.isPublished)}
               title={seriesItem.isPublished ? 'Unpublish' : 'Publish'}
             >
               {seriesItem.isPublished ? <FiEyeOff /> : <FiEye />}
             </button>
-            <button className="action-btn" title="Edit">
+            <button
+              className="action-btn"
+              title="Edit"
+              onClick={() => setEditingItem(seriesItem)}
+            >
               <FiEdit3 />
             </button>
-            <button className="action-btn delete" title="Delete">
+            <button
+              className="action-btn delete"
+              title="Delete"
+              onClick={() => deleteSeries(seriesItem._id, seriesItem.title)}
+            >
               <FiTrash2 />
             </button>
           </div>
