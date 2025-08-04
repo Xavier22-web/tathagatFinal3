@@ -122,8 +122,12 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
     }
 
     // Check if response data is valid
-    if (!responseData || (typeof responseData === 'object' && Object.keys(responseData).length === 0)) {
-      throw new Error(`HTTP ${response.status}: Empty response`);
+    if (!responseData ||
+        (typeof responseData === 'object' && Object.keys(responseData).length === 0) ||
+        (typeof responseData === 'string' && responseData.trim() === '') ||
+        responseData === null ||
+        responseData === undefined) {
+      throw new Error(`HTTP ${response.status}: Empty or invalid response`);
     }
 
     return responseData;
