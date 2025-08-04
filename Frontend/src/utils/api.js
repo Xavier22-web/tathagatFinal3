@@ -116,7 +116,12 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
       }
 
       // Check if response looks like HTML (common when backend routes don't exist)
-      if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+      if (text.trim().startsWith('<!DOCTYPE') ||
+          text.trim().startsWith('<html') ||
+          text.trim().startsWith('<HTML') ||
+          text.includes('<title>') ||
+          text.includes('<body>') ||
+          text.includes('<div id="root">')) {
         throw new Error('Received HTML instead of JSON - endpoint may not exist');
       }
 
@@ -254,7 +259,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             ]
           };
         } else if (url.includes('/tests')) {
-          console.log('��� Returning mock tests data');
+          console.log('🎯 Returning mock tests data');
           // Generate tests based on series filter
           const seriesId = new URLSearchParams(url.split('?')[1] || '').get('seriesId');
 
