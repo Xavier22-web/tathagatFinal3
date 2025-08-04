@@ -6,8 +6,9 @@ const isLocalhost = typeof window !== 'undefined' &&
    window.location.hostname === '127.0.0.1' ||
    window.location.hostname === '0.0.0.0');
 
-// Use relative URLs so the React dev server proxy can handle the requests
-const API_BASE_URL = '';
+// Configure API base URL based on environment
+const API_BASE_URL = process.env.REACT_APP_API_URL ||
+  (isLocalhost ? 'http://localhost:5000' : '');
 
 // Log the configuration for debugging
 console.log('API Configuration:', {
