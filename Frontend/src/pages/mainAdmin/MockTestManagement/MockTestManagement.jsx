@@ -737,6 +737,95 @@ const MockTestManagement = () => {
     </div>
   );
 
+  const TestCard = ({ test }) => {
+    const getSeriesTitle = (seriesId) => {
+      const series = series.find(s => s._id === seriesId);
+      return series ? series.title : 'Unknown Series';
+    };
+
+    return (
+      <div className="management-card">
+        <div className="card-header">
+          <div className="test-info">
+            <h4>{test.title}</h4>
+            <div className="test-meta">
+              <span className="series-tag">{getSeriesTitle(test.seriesId)}</span>
+              <span className={`difficulty-badge ${test.difficulty?.toLowerCase() || 'medium'}`}>
+                {test.difficulty || 'Medium'}
+              </span>
+              <span className={`status-badge ${test.isActive ? 'active' : 'inactive'}`}>
+                {test.isActive ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+            <p className="test-description">{test.description}</p>
+          </div>
+          <div className="card-actions">
+            <div className="action-buttons">
+              <button
+                className="action-btn primary"
+                title="View Questions"
+                onClick={() => {
+                  setActiveTab('questions');
+                  setFilters(prev => ({ ...prev, testId: test._id }));
+                }}
+              >
+                <FiFileText />
+              </button>
+              <button
+                className="action-btn"
+                title="Edit Test"
+                onClick={() => setEditingItem(test)}
+              >
+                <FiEdit3 />
+              </button>
+              <button
+                className="action-btn delete"
+                title="Delete Test"
+                onClick={() => deleteTest(test._id, test.title)}
+              >
+                <FiTrash2 />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="card-content">
+          <div className="test-stats">
+            <div className="stat-item">
+              <FiClock />
+              <span>{test.duration} Min</span>
+            </div>
+            <div className="stat-item">
+              <FiFileText />
+              <span>{test.totalQuestions} Questions</span>
+            </div>
+            <div className="stat-item">
+              <FiUsers />
+              <span>{test.attemptCount || 0} Attempts</span>
+            </div>
+            <div className="stat-item">
+              <span className="marks">+{test.positiveMarks || 3}, {test.negativeMarks || -1}</span>
+            </div>
+          </div>
+
+          {test.sections && test.sections.length > 0 && (
+            <div className="test-sections">
+              <h5>Sections:</h5>
+              <div className="sections-grid">
+                {test.sections.map((section, index) => (
+                  <div key={index} className="section-item">
+                    <span className="section-name">{section.name}</span>
+                    <span className="section-details">{section.questions}Q • {section.duration}M</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   const QuestionCard = ({ question }) => (
     <div className="management-card">
       <div className="card-header">
