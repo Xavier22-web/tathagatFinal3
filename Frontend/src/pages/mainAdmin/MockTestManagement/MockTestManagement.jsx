@@ -48,9 +48,12 @@ const MockTestManagement = () => {
 
       const data = await fetchWithErrorHandling(`/api/admin/mock-tests/series?${queryParams}`);
 
+      console.log('📊 API Response received:', data);
+
       if (data && data.success && data.series) {
         setSeries(data.series);
         console.log('✅ Series loaded successfully:', data.series.length, 'series');
+        console.log('📋 Series data:', data.series.map(s => s.title));
       } else {
         console.error('Failed to fetch series:', data?.message || 'Invalid response structure');
         throw new Error(data?.message || 'API returned invalid data');
