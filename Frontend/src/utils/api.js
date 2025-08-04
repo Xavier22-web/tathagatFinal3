@@ -130,11 +130,14 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
   } catch (error) {
     clearTimeout(timeoutId);
 
-    // In development, if backend is not available, return mock data
+    // In development, if backend is not available or returns errors, return mock data
     if (process.env.NODE_ENV === 'development' &&
         (error.name === 'AbortError' ||
          error instanceof TypeError ||
-         error.message.includes('fetch'))) {
+         error.message.includes('fetch') ||
+         error.message.includes('HTTP 404') ||
+         error.message.includes('HTTP 500') ||
+         error.message.includes('Empty response'))) {
 
       console.warn('🔄 Backend unavailable, using mock data for:', url);
 
