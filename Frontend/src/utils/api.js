@@ -229,6 +229,17 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
         total: 1
       };
     }
+
+    // Catch-all fallback for any admin mock test endpoint
+    console.log('🎯 Catch-all fallback - returning basic success response');
+    return {
+      success: true,
+      message: 'Admin endpoint mock data',
+      data: [],
+      series: [],
+      tests: [],
+      questions: []
+    };
   }
 
   const controller = new AbortController();
