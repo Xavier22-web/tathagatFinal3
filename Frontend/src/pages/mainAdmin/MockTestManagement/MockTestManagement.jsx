@@ -179,6 +179,64 @@ const MockTestManagement = () => {
     }
   };
 
+  // Delete series
+  const deleteSeries = async (seriesId, seriesTitle) => {
+    if (!window.confirm(`Are you sure you want to delete "${seriesTitle}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const adminToken = localStorage.getItem('adminToken');
+      const response = await fetch(`/api/admin/mock-tests/series/${seriesId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        fetchSeries();
+        alert('Series deleted successfully');
+      } else {
+        alert(data.message || 'Failed to delete series');
+      }
+    } catch (error) {
+      console.error('Error deleting series:', error);
+      alert('Failed to delete series');
+    }
+  };
+
+  // Delete test
+  const deleteTest = async (testId, testTitle) => {
+    if (!window.confirm(`Are you sure you want to delete "${testTitle}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const adminToken = localStorage.getItem('adminToken');
+      const response = await fetch(`/api/admin/mock-tests/tests/${testId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        fetchTests();
+        alert('Test deleted successfully');
+      } else {
+        alert(data.message || 'Failed to delete test');
+      }
+    } catch (error) {
+      console.error('Error deleting test:', error);
+      alert('Failed to delete test');
+    }
+  };
+
   const CreateSeriesModal = () => {
     const [formData, setFormData] = useState({
       title: '',
