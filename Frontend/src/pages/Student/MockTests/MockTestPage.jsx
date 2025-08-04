@@ -39,8 +39,6 @@ const MockTestPage = () => {
         category: filters.category !== 'all' ? filters.category : ''
       });
 
-      // Import the API utility function
-      const { fetchWithErrorHandling } = await import('../../../utils/api');
       const data = await fetchWithErrorHandling(`/api/mock-tests/series?${queryParams}`);
 
       if (data.success) {
