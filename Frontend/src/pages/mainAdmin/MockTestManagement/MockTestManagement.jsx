@@ -969,9 +969,29 @@ const MockTestManagement = () => {
   return (
     <div className="mocktest-management">
       <div className="management-header">
-        <h1>Mock Test Management</h1>
+        <div className="header-content">
+          <h1>Mock Test Management</h1>
+          <div className="header-stats">
+            <div className="stat-card">
+              <div className="stat-value">{series.length}</div>
+              <div className="stat-label">Total Series</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">{tests.length}</div>
+              <div className="stat-label">Total Tests</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">{questions.length}</div>
+              <div className="stat-label">Total Questions</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">{series.reduce((acc, s) => acc + (s.enrolledCount || 0), 0)}</div>
+              <div className="stat-label">Total Enrollments</div>
+            </div>
+          </div>
+        </div>
         <div className="header-actions">
-          <button 
+          <button
             className="primary-btn"
             onClick={() => setShowCreateModal(true)}
           >
