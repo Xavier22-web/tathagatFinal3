@@ -1011,6 +1011,48 @@ const MockTestManagement = () => {
               </div>
             )}
 
+            {activeTab === 'tests' && (
+              <div className="tests-grid">
+                {tests.length === 0 ? (
+                  <div className="empty-state">
+                    <FiPlay size={48} />
+                    <h3>No Mock Tests</h3>
+                    <p>
+                      {selectedSeriesId
+                        ? `Add mock tests to this series. You can create as many tests as needed.`
+                        : `Create mock tests for your series. Select a series first or create tests for all series.`
+                      }
+                    </p>
+                    <button
+                      className="primary-btn"
+                      onClick={() => setShowCreateModal(true)}
+                    >
+                      Create Test
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {selectedSeriesId && (
+                      <div className="section-header">
+                        <h3>Tests in {series.find(s => s._id === selectedSeriesId)?.title}</h3>
+                        <button
+                          className="primary-btn"
+                          onClick={() => setShowCreateModal(true)}
+                        >
+                          <FiPlus /> Add Test
+                        </button>
+                      </div>
+                    )}
+                    <div className="tests-list">
+                      {tests.map((test) => (
+                        <TestCard key={test._id} test={test} />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
             {activeTab === 'questions' && (
               <div className="questions-grid">
                 {questions.length === 0 ? (
