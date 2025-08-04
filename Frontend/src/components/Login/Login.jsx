@@ -35,18 +35,18 @@ const Login = ({ onClose, setUser }) => {
       const { fetchWithErrorHandling } = await import('../../utils/api');
       const response = await fetchWithErrorHandling("/api/dev/login", { method: 'POST' });
 
-      if (response.data.success && response.data.token) {
+      if (response.success && response.token) {
         // Store authentication data
-        localStorage.setItem("authToken", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("authToken", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
 
         // Set user context if setUser function exists
         if (setUser && typeof setUser === 'function') {
-          setUser(response.data.user);
+          setUser(response.user);
         }
 
         console.log("✅ Demo login successful");
-        setToastMessage("Demo login successful! Welcome " + response.data.user.name);
+        setToastMessage("Demo login successful! Welcome " + response.user.name);
 
         // Wait a moment to show success message, then redirect
         setTimeout(() => {
