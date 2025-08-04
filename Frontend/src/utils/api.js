@@ -199,7 +199,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
         ],
         total: 1
       };
-    } else if (url.includes('/tests')) {
+    } else if (url.includes('/tests') || url.includes('/tests?')) {
       console.log('🎯 Returning mock tests data');
       return {
         success: true,
@@ -324,7 +324,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
                  url.includes('mock-tests/series') ||
                  url.includes('mock-tests/tests') ||
                  url.includes('mock-tests/questions')) {
-        console.log('🔄 Returning mock data for admin mock test endpoints:', url);
+        console.log('���� Returning mock data for admin mock test endpoints:', url);
 
         // Handle different admin endpoints
         if (url.includes('/series')) {
