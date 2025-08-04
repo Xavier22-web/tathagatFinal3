@@ -101,10 +101,18 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
   if (isAdminMockTestUrl) {
     console.log('🎯 Admin mock test endpoint detected - returning mock data immediately');
     console.log('🔍 Full URL:', url);
-    console.log('🔍 URL contains /series:', url.includes('/series'));
-    console.log('🔍 URL contains /series?:', url.includes('/series?'));
+    const isSeriesUrl = url.includes('/series') || url.includes('/series?');
+    const isQuestionsUrl = url.includes('/questions') || url.includes('/questions?');
+    const isTestsUrl = url.includes('/tests') || url.includes('/tests?');
 
-    if (url.includes('/series') || url.includes('/series?')) {
+    console.log('🔍 URL analysis:', {
+      isSeriesUrl,
+      isQuestionsUrl,
+      isTestsUrl,
+      url
+    });
+
+    if (isSeriesUrl) {
       console.log('🎯 Returning mock series data with 5 series');
       return {
         success: true,
