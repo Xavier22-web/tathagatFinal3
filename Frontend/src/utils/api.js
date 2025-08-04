@@ -122,6 +122,8 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
           text.includes('<title>') ||
           text.includes('<body>') ||
           text.includes('<div id="root">')) {
+        console.log('🔍 HTML detected in response for:', url);
+        console.log('Response preview:', text.substring(0, 200) + '...');
         throw new Error('Received HTML instead of JSON - endpoint may not exist');
       }
 
