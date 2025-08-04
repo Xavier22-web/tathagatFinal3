@@ -92,6 +92,8 @@ const MOCK_DATA = {
 
 // Generic fetch wrapper with error handling and development fallback
 export const fetchWithErrorHandling = async (url, options = {}) => {
+  console.log('🚀 API Call:', options.method || 'GET', url);
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for faster development
 
