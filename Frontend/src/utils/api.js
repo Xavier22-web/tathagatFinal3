@@ -94,9 +94,33 @@ const MOCK_DATA = {
 export const fetchWithErrorHandling = async (url, options = {}) => {
   console.log('🚀 API Call:', options.method || 'GET', url);
 
-  // IMMEDIATE FALLBACK - Check for admin mock test endpoints FIRST
+  // IMMEDIATE FALLBACK - Check for admin endpoints and demo login FIRST
   const isAdminMockTestUrl = url.includes('/api/admin/mock-tests/');
-  console.log('🔍 Is admin mock test URL?', isAdminMockTestUrl, 'URL:', url);
+  const isDemoLoginUrl = url.includes('/api/admin/demo-login') || url.includes('/demo-login');
+  const isAdminUrl = url.includes('/api/admin/');
+
+  console.log('🔍 URL Analysis:', {
+    isAdminMockTestUrl,
+    isDemoLoginUrl,
+    isAdminUrl,
+    url
+  });
+
+  // Handle demo login immediately
+  if (isDemoLoginUrl) {
+    console.log('🎯 Demo login endpoint detected - returning mock success');
+    return {
+      success: true,
+      message: 'Demo login successful',
+      token: 'demo_admin_token_12345',
+      user: {
+        id: 'demo_admin_1',
+        email: 'admin@demo.com',
+        name: 'Demo Admin',
+        role: 'admin'
+      }
+    };
+  }
 
   if (isAdminMockTestUrl) {
     console.log('🎯 Admin mock test endpoint detected - returning mock data immediately');
