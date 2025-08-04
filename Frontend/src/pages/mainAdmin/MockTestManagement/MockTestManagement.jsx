@@ -28,6 +28,7 @@ const MockTestManagement = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [selectedSeriesId, setSelectedSeriesId] = useState(null);
+  const [demoMode, setDemoMode] = useState(false);
   const [filters, setFilters] = useState({
     category: 'all',
     search: '',
