@@ -739,8 +739,8 @@ const MockTestManagement = () => {
 
   const TestCard = ({ test }) => {
     const getSeriesTitle = (seriesId) => {
-      const series = series.find(s => s._id === seriesId);
-      return series ? series.title : 'Unknown Series';
+      const foundSeries = series.find(s => s._id === seriesId);
+      return foundSeries ? foundSeries.title : 'Unknown Series';
     };
 
     return (
