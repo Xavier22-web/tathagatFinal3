@@ -1243,46 +1243,107 @@ const MockTestManagement = () => {
     );
   };
 
-  const QuestionCard = ({ question }) => (
-    <div className="management-card">
-      <div className="card-header">
-        <div className="question-info">
-          <h4>{question.questionText.substring(0, 100)}...</h4>
-          <div className="question-meta">
-            <span className="section-tag">{question.section}</span>
-            <span className="type-tag">{question.questionType}</span>
-            <span className={`difficulty-badge ${question.difficulty.toLowerCase()}`}>
-              {question.difficulty}
-            </span>
+  const QuestionCard = ({ question }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    return (
+      <div className="management-card">
+        <div className="card-header">
+          <div className="question-info">
+            <h4>{question.questionText.length > 120 ?
+              `${question.questionText.substring(0, 120)}...` :
+              question.questionText}</h4>
+            <div className="question-meta">
+              <span className={`section-tag`} data-section={question.section}>{question.section}</span>
+              <span className="type-tag">{question.questionType}</span>
+              <span className={`difficulty-badge ${question.difficulty.toLowerCase()}`}>
+                {question.difficulty}
+              </span>
+            </div>
+          </div>
+          <div className="card-actions">
+            <div className="action-buttons">
+              <button
+                className="action-btn"
+                title={expanded ? "Collapse" : "Expand"}
+                onClick={() => setExpanded(!expanded)}
+              >
+                <FiEye />
+              </button>
+              <button
+                className="action-btn"
+                title="Edit"
+                onClick={() => setEditingItem(question)}
+              >
+                <FiEdit3 />
+              </button>
+              <button
+                className="action-btn delete"
+                title="Delete"
+                onClick={() => {
+                  if (window.confirm(`Are you sure you want to delete this question?`)) {
+                    setQuestions(prev => prev.filter(q => q._id !== question._id));
+                    alert('Question deleted successfully (demo mode)');
+                  }
+                }}
+              >
+                <FiTrash2 />
+              </button>
+            </div>
           </div>
         </div>
-        <div className="card-actions">
-          <div className="action-buttons">
-            <button className="action-btn" title="Edit">
-              <FiEdit3 />
-            </button>
-            <button className="action-btn delete" title="Delete">
-              <FiTrash2 />
-            </button>
+
+        <div className="card-content">
+          <div className="question-details">
+            <div className="detail-item">
+              <strong>Topic:</strong> {question.topic || 'General'}
+            </div>
+            <div className="detail-item">
+              <strong>Marks:</strong> +{question.marks?.positive || 3}, {question.marks?.negative || -1}
+            </div>
+            <div className="detail-item">
+              <strong>Options:</strong> {question.options?.length || 4}
+            </div>
+            <div className="detail-item">
+              <strong>Time:</strong> {question.timeEstimate || 120}s
+            </div>
           </div>
+
+          {expanded && (
+            <div className="question-expanded">
+              <div className="question-full-text">
+                <h5>Complete Question:</h5>
+                <p>{question.questionText}</p>
+              </div>
+
+              {question.options && question.options.length > 0 && (
+                <div className="question-options">
+                  <h5>Answer Options:</h5>
+                  {question.options.map((option, index) => (
+                    <div
+                      key={index}
+                      className={`option-display ${question.correctAnswer === index ? 'correct-option' : ''}`}
+                    >
+                      <span className="option-label">{String.fromCharCode(65 + index)}.</span>
+                      <span className="option-text">{option}</span>
+                      {question.correctAnswer === index && <span className="correct-indicator">✓ Correct</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {question.explanation && (
+                <div className="question-explanation">
+                  <h5>Explanation:</h5>
+                  <p>{question.explanation}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
-      
-      <div className="card-content">
-        <div className="question-details">
-          <div className="detail-item">
-            <strong>Topic:</strong> {question.topic || 'Not specified'}
-          </div>
-          <div className="detail-item">
-            <strong>Marks:</strong> +{question.marks.positive}, {question.marks.negative}
-          </div>
-          <div className="detail-item">
-            <strong>Options:</strong> {question.options.length}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="mocktest-management">
