@@ -256,6 +256,28 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
         return { status: 'ok', message: 'Mock health check' };
       }
 
+      // Handle CRUD operations for admin endpoints
+      if (options.method === 'POST' && url.includes('/api/admin/mock-tests/')) {
+        console.log('🔄 Mock POST operation for:', url);
+        return {
+          success: true,
+          message: 'Created successfully (demo mode)',
+          data: { _id: Date.now().toString() }
+        };
+      } else if (options.method === 'PUT' && url.includes('/api/admin/mock-tests/')) {
+        console.log('🔄 Mock PUT operation for:', url);
+        return {
+          success: true,
+          message: 'Updated successfully (demo mode)'
+        };
+      } else if (options.method === 'DELETE' && url.includes('/api/admin/mock-tests/')) {
+        console.log('🔄 Mock DELETE operation for:', url);
+        return {
+          success: true,
+          message: 'Deleted successfully (demo mode)'
+        };
+      }
+
       // Default mock response
       return {
         success: true,
