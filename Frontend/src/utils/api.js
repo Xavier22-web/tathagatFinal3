@@ -137,7 +137,13 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
     });
 
     if (isSeriesUrl) {
-      console.log('🎯 Returning mock series data with 5 series');
+      console.log('🎯 SERIES URL MATCHED - Returning mock series data with 5 series');
+      console.log('🔍 Series URL analysis:', {
+        url,
+        includesSeries: url.includes('/series'),
+        includesSeriesQ: url.includes('/series?'),
+        match: 'SERIES'
+      });
       return {
         success: true,
         message: 'Mock data loaded successfully',
