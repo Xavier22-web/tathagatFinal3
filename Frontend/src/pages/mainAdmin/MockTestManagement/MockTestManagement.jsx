@@ -853,8 +853,10 @@ const MockTestManagement = () => {
           createdAt: new Date().toISOString()
         };
         setQuestions(prev => [...prev, newQuestion]);
-        alert('Question created successfully (demo mode)');
+        alert('Question created successfully! Click on "Questions" tab to view it.');
         setShowCreateModal(false);
+        // Auto-switch to questions tab to show the created question
+        setActiveTab('questions');
         setFormData({
           questionText: '',
           section: 'VARC',
