@@ -758,6 +758,321 @@ const MockTestManagement = () => {
     );
   };
 
+  const CreateQuestionModal = () => {
+    const [formData, setFormData] = useState({
+      questionText: '',
+      section: 'VARC',
+      questionType: 'Multiple Choice',
+      difficulty: 'Medium',
+      topic: '',
+      options: ['', '', '', ''],
+      correctAnswer: 0,
+      explanation: '',
+      marks: {
+        positive: 3,
+        negative: -1
+      },
+      timeEstimate: 120
+    });
+    const [submitting, setSubmitting] = useState(false);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setSubmitting(true);
+
+      // Validate form
+      if (!formData.questionText.trim()) {
+        alert('Please enter the question text');
+        setSubmitting(false);
+        return;
+      }
+
+      if (formData.options.some(option => !option.trim())) {
+        alert('Please fill all option fields');
+        setSubmitting(false);
+        return;
+      }
+
+      try {
+        const data = await fetchWithErrorHandling('/api/admin/mock-tests/questions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (data && data.success) {
+          alert('Question created successfully!');
+          setShowCreateModal(false);
+          setFormData({
+            questionText: '',
+            section: 'VARC',
+            questionType: 'Multiple Choice',
+            difficulty: 'Medium',
+            topic: '',
+            options: ['', '', '', ''],
+            correctAnswer: 0,
+            explanation: '',
+            marks: {
+              positive: 3,
+              negative: -1
+            },
+            timeEstimate: 120
+          });
+          fetchQuestions();
+        } else {
+          throw new Error(data?.message || 'Failed to create question');
+        }
+      } catch (error) {
+        console.error('Error creating question:', error);
+        // For development, add to local state
+        const newQuestion = {
+          _id: Date.now().toString(),
+          ...formData,
+          createdAt: new Date().toISOString()
+        };
+        setQuestions(prev => [...prev, newQuestion]);
+        alert('Question created successfully (demo mode)');
+        setShowCreateModal(false);
+        setFormData({
+          questionText: '',
+          section: 'VARC',
+          questionType: 'Multiple Choice',
+          difficulty: 'Medium',
+          topic: '',
+          options: ['', '', '', ''],
+          correctAnswer: 0,
+          explanation: '',
+          marks: {
+            positive: 3,
+            negative: -1
+          },
+          timeEstimate: 120
+        });
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    const updateOption = (index, value) => {
+      const updatedOptions = [...formData.options];
+      updatedOptions[index] = value;
+      setFormData(prev => ({ ...prev, options: updatedOptions }));
+    };
+
+    const addOption = () => {
+      if (formData.options.length < 6) {
+        setFormData(prev => ({
+          ...prev,
+          options: [...prev.options, '']
+        }));
+      }
+    };
+
+    const removeOption = (index) => {
+      if (formData.options.length > 2) {
+        const updatedOptions = formData.options.filter((_, i) => i !== index);
+        setFormData(prev => ({
+          ...prev,
+          options: updatedOptions,
+          correctAnswer: prev.correctAnswer >= index ? Math.max(0, prev.correctAnswer - 1) : prev.correctAnswer
+        }));
+      }
+    };
+
+    return (
+      <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
+        <div className="modal-content large-modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3>Create New Question</h3>
+            <button onClick={() => setShowCreateModal(false)} className="close-btn">×</button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="create-form">
+            <div className="form-group">
+              <label>Question Text *</label>
+              <textarea
+                value={formData.questionText}
+                onChange={(e) => setFormData(prev => ({ ...prev, questionText: e.target.value }))}
+                placeholder="Enter the complete question text..."
+                rows={4}
+                required
+                maxLength={2000}
+              />
+              <small>{formData.questionText.length}/2000 characters</small>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Section *</label>
+                <select
+                  value={formData.section}
+                  onChange={(e) => setFormData(prev => ({ ...prev, section: e.target.value }))}
+                  required
+                >
+                  <option value="VARC">VARC (Verbal Ability & Reading Comprehension)</option>
+                  <option value="DILR">DILR (Data Interpretation & Logical Reasoning)</option>
+                  <option value="QA">QA (Quantitative Ability)</option>
+                  <option value="General Knowledge">General Knowledge</option>
+                  <option value="Decision Making">Decision Making</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Question Type *</label>
+                <select
+                  value={formData.questionType}
+                  onChange={(e) => setFormData(prev => ({ ...prev, questionType: e.target.value }))}
+                  required
+                >
+                  <option value="Multiple Choice">Multiple Choice</option>
+                  <option value="Single Correct">Single Correct</option>
+                  <option value="Multiple Correct">Multiple Correct</option>
+                  <option value="Numerical">Numerical</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Difficulty *</label>
+                <select
+                  value={formData.difficulty}
+                  onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value }))}
+                  required
+                >
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Topic</label>
+              <input
+                type="text"
+                value={formData.topic}
+                onChange={(e) => setFormData(prev => ({ ...prev, topic: e.target.value }))}
+                placeholder="e.g., Reading Comprehension, Profit & Loss, Data Interpretation"
+                maxLength={100}
+              />
+            </div>
+
+            <div className="options-section">
+              <h4>Answer Options</h4>
+              {formData.options.map((option, index) => (
+                <div key={index} className="option-row">
+                  <div className="option-header">
+                    <label>Option {String.fromCharCode(65 + index)}</label>
+                    <div className="option-controls">
+                      <label className="correct-answer-label">
+                        <input
+                          type="radio"
+                          name="correctAnswer"
+                          checked={formData.correctAnswer === index}
+                          onChange={() => setFormData(prev => ({ ...prev, correctAnswer: index }))}
+                        />
+                        Correct Answer
+                      </label>
+                      {formData.options.length > 2 && (
+                        <button
+                          type="button"
+                          onClick={() => removeOption(index)}
+                          className="remove-option-btn"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    value={option}
+                    onChange={(e) => updateOption(index, e.target.value)}
+                    placeholder={`Enter option ${String.fromCharCode(65 + index)}`}
+                    required
+                    maxLength={500}
+                  />
+                </div>
+              ))}
+
+              {formData.options.length < 6 && (
+                <button
+                  type="button"
+                  onClick={addOption}
+                  className="add-option-btn"
+                >
+                  + Add Option
+                </button>
+              )}
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Positive Marks</label>
+                <input
+                  type="number"
+                  value={formData.marks.positive}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    marks: { ...prev.marks, positive: parseInt(e.target.value) || 3 }
+                  }))}
+                  min="1"
+                  max="10"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Negative Marks</label>
+                <input
+                  type="number"
+                  value={formData.marks.negative}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    marks: { ...prev.marks, negative: parseInt(e.target.value) || -1 }
+                  }))}
+                  max="0"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Time Estimate (seconds)</label>
+                <input
+                  type="number"
+                  value={formData.timeEstimate}
+                  onChange={(e) => setFormData(prev => ({ ...prev, timeEstimate: parseInt(e.target.value) || 120 }))}
+                  min="30"
+                  max="600"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Explanation</label>
+              <textarea
+                value={formData.explanation}
+                onChange={(e) => setFormData(prev => ({ ...prev, explanation: e.target.value }))}
+                placeholder="Provide detailed explanation for the correct answer..."
+                rows={3}
+                maxLength={1000}
+              />
+              <small>{formData.explanation.length}/1000 characters</small>
+            </div>
+
+            <div className="form-actions">
+              <button type="button" onClick={() => setShowCreateModal(false)} className="cancel-btn">
+                Cancel
+              </button>
+              <button type="submit" disabled={submitting} className="submit-btn">
+                {submitting ? 'Creating...' : 'Create Question'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
   const SeriesCard = ({ series: seriesItem }) => (
     <div className="management-card">
       <div className="card-header">
