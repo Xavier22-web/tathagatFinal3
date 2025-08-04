@@ -157,19 +157,22 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
   } catch (error) {
     clearTimeout(timeoutId);
 
-    // In development, if backend is not available or returns errors, return mock data
-    if (process.env.NODE_ENV === 'development' &&
-        (error.name === 'AbortError' ||
-         error instanceof TypeError ||
-         error.message.includes('fetch') ||
-         error.message.includes('HTTP 404') ||
-         error.message.includes('HTTP 500') ||
-         error.message.includes('HTTP 200') ||
-         error.message.includes('Empty') ||
-         error.message.includes('invalid response') ||
-         error.message.includes('HTML instead of JSON') ||
-         error.message.includes('endpoint may not exist') ||
-         error.message.includes('JSON parsing failed'))) {
+    // Always fallback to mock data for admin endpoints or in development mode
+    const shouldFallback = url.includes('/api/admin/mock-tests/') ||
+                          (process.env.NODE_ENV === 'development' &&
+                           (error.name === 'AbortError' ||
+                            error instanceof TypeError ||
+                            error.message.includes('fetch') ||
+                            error.message.includes('HTTP 404') ||
+                            error.message.includes('HTTP 500') ||
+                            error.message.includes('HTTP 200') ||
+                            error.message.includes('Empty') ||
+                            error.message.includes('invalid response') ||
+                            error.message.includes('HTML instead of JSON') ||
+                            error.message.includes('endpoint may not exist') ||
+                            error.message.includes('JSON parsing failed')));
+
+    if (shouldFallback) {
 
       console.warn('🔄 Backend unavailable, using mock data for:', url);
       console.warn('Error details:', error.message);
