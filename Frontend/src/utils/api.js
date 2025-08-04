@@ -212,7 +212,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
         ],
         total: 1
       };
-    } else if (url.includes('/tests') || url.includes('/tests?')) {
+    } else if (isTestsUrl) {
       console.log('🎯 Returning mock tests data');
       return {
         success: true,
