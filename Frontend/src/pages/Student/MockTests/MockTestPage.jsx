@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MockTestPage.css';
+import { fetchWithErrorHandling } from '../../../utils/api';
 import {
   FiClock,
   FiUsers,
