@@ -97,8 +97,9 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
   // Immediate fallback for admin mock test endpoints
   if (url.includes('/api/admin/mock-tests/')) {
     console.log('🎯 Admin mock test endpoint detected - returning mock data immediately');
+    console.log('🔍 Full URL:', url);
 
-    if (url.includes('/series')) {
+    if (url.includes('/series') || url.includes('/series?')) {
       console.log('🎯 Returning mock series data with 5 series');
       return {
         success: true,
