@@ -156,6 +156,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
     return responseData;
   } catch (error) {
     clearTimeout(timeoutId);
+    console.log('🚨 API Error caught:', error.message, 'for URL:', url);
 
     // Always fallback to mock data for admin endpoints or in development mode
     const shouldFallback = url.includes('/api/admin/mock-tests/') ||
