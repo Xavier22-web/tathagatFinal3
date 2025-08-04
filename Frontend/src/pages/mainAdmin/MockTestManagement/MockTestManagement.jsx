@@ -100,14 +100,14 @@ const MockTestManagement = () => {
 
       const data = await fetchWithErrorHandling(`/api/admin/mock-tests/questions?${queryParams}`);
 
-      if (data.success) {
+      if (data && data.success) {
         setQuestions(data.questions || []);
       } else {
-        console.error('Failed to fetch questions:', data.message);
-        setQuestions([]);
+        console.error('Failed to fetch questions:', data?.message || 'Unknown error');
+        throw new Error('API returned invalid data');
       }
     } catch (error) {
-      console.error('Error fetching questions:', error);
+      console.warn('Backend unavailable, using mock data:', error.message);
       // Set mock data for development
       setQuestions([
         {
