@@ -336,6 +336,7 @@ const AppContent = () => {
 const App = () => {
   return (
     <ErrorBoundary>
+      <DevNotification />
       <BrowserRouter>
         <AppContent />
       </BrowserRouter>
