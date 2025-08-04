@@ -166,6 +166,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
          error.message.includes('Empty') ||
          error.message.includes('invalid response') ||
          error.message.includes('HTML instead of JSON') ||
+         error.message.includes('endpoint may not exist') ||
          error.message.includes('JSON parsing failed'))) {
 
       console.warn('🔄 Backend unavailable, using mock data for:', url);
