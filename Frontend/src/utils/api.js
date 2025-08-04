@@ -190,7 +190,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
           }
         ]
       };
-    } else if (url.includes('/questions') || url.includes('/questions?')) {
+    } else if (isQuestionsUrl) {
       console.log('🎯 Returning mock questions data');
       return {
         success: true,
