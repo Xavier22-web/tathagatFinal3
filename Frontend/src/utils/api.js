@@ -117,8 +117,13 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
 
     if (!response.ok) {
       // Now we can safely access the response data without re-reading the stream
-      const errorMessage = responseData.message || `HTTP error! status: ${response.status}`;
+      const errorMessage = responseData.message || `HTTP ${response.status}: ${response.statusText}`;
       throw new Error(errorMessage);
+    }
+
+    // Check if response data is valid
+    if (!responseData || (typeof responseData === 'object' && Object.keys(responseData).length === 0)) {
+      throw new Error(`HTTP ${response.status}: Empty response`);
     }
 
     return responseData;
