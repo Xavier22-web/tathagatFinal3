@@ -387,11 +387,13 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             filteredTests = allTests.filter(test => test.seriesId === seriesId);
           }
 
-          return {
+          const result = {
             success: true,
             tests: filteredTests,
             total: filteredTests.length
           };
+          console.log('🎯 Mock tests result:', result.tests.length, 'tests for series:', seriesId || 'all');
+          return result;
         } else if (url.includes('/questions')) {
           console.log('🎯 Returning mock questions data');
           const sectionFilter = new URLSearchParams(url.split('?')[1] || '').get('section');
