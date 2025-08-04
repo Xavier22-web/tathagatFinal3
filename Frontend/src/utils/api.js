@@ -177,7 +177,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
           }
         ]
       };
-    } else if (url.includes('/questions')) {
+    } else if (url.includes('/questions') || url.includes('/questions?')) {
       console.log('🎯 Returning mock questions data');
       return {
         success: true,
