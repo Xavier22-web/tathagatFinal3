@@ -228,46 +228,142 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             ]
           };
         } else if (url.includes('/tests')) {
+          // Generate tests based on series filter
+          const seriesId = new URLSearchParams(url.split('?')[1] || '').get('seriesId');
+
+          const allTests = [];
+
+          // CAT Foundation Series (12 tests)
+          for (let i = 1; i <= 12; i++) {
+            allTests.push({
+              _id: `cat_foundation_${i}`,
+              title: `CAT Foundation Test ${i}`,
+              description: `Progressive difficulty test ${i} covering all CAT sections with detailed explanations`,
+              seriesId: '1',
+              duration: 180,
+              totalQuestions: 100,
+              difficulty: i <= 4 ? 'Easy' : i <= 8 ? 'Medium' : 'Hard',
+              isActive: true,
+              attemptCount: Math.floor(Math.random() * 500) + 100,
+              positiveMarks: 3,
+              negativeMarks: -1,
+              instructions: `This is test ${i} of the CAT Foundation Series. Focus on accuracy over speed.`,
+              sections: [
+                { name: 'VARC', questions: 34, duration: 60 },
+                { name: 'DILR', questions: 32, duration: 60 },
+                { name: 'QA', questions: 34, duration: 60 }
+              ],
+              createdAt: `2024-01-${15 + i}T00:00:00.000Z`
+            });
+          }
+
+          // CAT Advanced Series (15 tests)
+          for (let i = 1; i <= 15; i++) {
+            allTests.push({
+              _id: `cat_advanced_${i}`,
+              title: `CAT Advanced Test ${i}`,
+              description: `High-difficulty test ${i} simulating actual CAT exam conditions`,
+              seriesId: '2',
+              duration: 180,
+              totalQuestions: 100,
+              difficulty: i <= 5 ? 'Medium' : 'Hard',
+              isActive: true,
+              attemptCount: Math.floor(Math.random() * 300) + 50,
+              positiveMarks: 3,
+              negativeMarks: -1,
+              instructions: `Advanced test ${i} with IIM-level questions. Time management is crucial.`,
+              sections: [
+                { name: 'VARC', questions: 34, duration: 60 },
+                { name: 'DILR', questions: 32, duration: 60 },
+                { name: 'QA', questions: 34, duration: 60 }
+              ],
+              createdAt: `2024-02-${i}T00:00:00.000Z`
+            });
+          }
+
+          // IPMAT Complete Series (10 tests)
+          for (let i = 1; i <= 10; i++) {
+            allTests.push({
+              _id: `ipmat_complete_${i}`,
+              title: `IPMAT Complete Test ${i}`,
+              description: `Comprehensive IPMAT test ${i} covering Quantitative Ability and Verbal Ability`,
+              seriesId: '3',
+              duration: 120,
+              totalQuestions: 90,
+              difficulty: i <= 3 ? 'Easy' : i <= 7 ? 'Medium' : 'Hard',
+              isActive: true,
+              attemptCount: Math.floor(Math.random() * 200) + 30,
+              positiveMarks: 4,
+              negativeMarks: -1,
+              instructions: `IPMAT test ${i} - Focus on both quantitative and verbal sections equally.`,
+              sections: [
+                { name: 'Quantitative Ability', questions: 45, duration: 60 },
+                { name: 'Verbal Ability', questions: 45, duration: 60 }
+              ],
+              createdAt: `2024-01-${20 + i}T00:00:00.000Z`
+            });
+          }
+
+          // XAT Mastery Series (12 tests)
+          for (let i = 1; i <= 12; i++) {
+            allTests.push({
+              _id: `xat_mastery_${i}`,
+              title: `XAT Mastery Test ${i}`,
+              description: `XAT focused test ${i} with emphasis on Decision Making and Essay Writing`,
+              seriesId: '4',
+              duration: 210,
+              totalQuestions: 100,
+              difficulty: i <= 4 ? 'Medium' : 'Hard',
+              isActive: true,
+              attemptCount: Math.floor(Math.random() * 150) + 20,
+              positiveMarks: 3,
+              negativeMarks: -0.25,
+              instructions: `XAT test ${i} - Pay special attention to Decision Making section.`,
+              sections: [
+                { name: 'Verbal Ability', questions: 26, duration: 65 },
+                { name: 'Decision Making', questions: 21, duration: 65 },
+                { name: 'Quantitative Ability', questions: 28, duration: 65 },
+                { name: 'General Knowledge', questions: 25, duration: 15 }
+              ],
+              createdAt: `2024-02-${10 + i}T00:00:00.000Z`
+            });
+          }
+
+          // SNAP Success Series (10 tests)
+          for (let i = 1; i <= 10; i++) {
+            allTests.push({
+              _id: `snap_success_${i}`,
+              title: `SNAP Success Test ${i}`,
+              description: `SNAP preparation test ${i} covering all four sections with time-efficient strategies`,
+              seriesId: '5',
+              duration: 60,
+              totalQuestions: 60,
+              difficulty: i <= 3 ? 'Easy' : i <= 6 ? 'Medium' : 'Hard',
+              isActive: true,
+              attemptCount: Math.floor(Math.random() * 100) + 10,
+              positiveMarks: 3,
+              negativeMarks: -0.75,
+              instructions: `SNAP test ${i} - Quick and accurate answering is key to success.`,
+              sections: [
+                { name: 'General English', questions: 15, duration: 15 },
+                { name: 'Quantitative Ability', questions: 15, duration: 15 },
+                { name: 'Analytical & Logical Reasoning', questions: 15, duration: 15 },
+                { name: 'General Awareness', questions: 15, duration: 15 }
+              ],
+              createdAt: `2024-02-${15 + i}T00:00:00.000Z`
+            });
+          }
+
+          // Filter tests by series if seriesId is provided
+          let filteredTests = allTests;
+          if (seriesId && seriesId !== 'all') {
+            filteredTests = allTests.filter(test => test.seriesId === seriesId);
+          }
+
           return {
             success: true,
-            tests: [
-              {
-                _id: '1',
-                title: 'Mock Test 1',
-                description: 'First practice test with mixed difficulty',
-                seriesId: '1',
-                duration: 180,
-                totalQuestions: 100,
-                difficulty: 'Medium',
-                isActive: true,
-                attemptCount: 156,
-                positiveMarks: 3,
-                negativeMarks: -1,
-                sections: [
-                  { name: 'VARC', questions: 34, duration: 60 },
-                  { name: 'DILR', questions: 32, duration: 60 },
-                  { name: 'QA', questions: 34, duration: 60 }
-                ]
-              },
-              {
-                _id: '2',
-                title: 'Mock Test 2',
-                description: 'Advanced level practice test',
-                seriesId: '1',
-                duration: 180,
-                totalQuestions: 100,
-                difficulty: 'Hard',
-                isActive: true,
-                attemptCount: 89,
-                positiveMarks: 3,
-                negativeMarks: -1,
-                sections: [
-                  { name: 'VARC', questions: 34, duration: 60 },
-                  { name: 'DILR', questions: 32, duration: 60 },
-                  { name: 'QA', questions: 34, duration: 60 }
-                ]
-              }
-            ]
+            tests: filteredTests,
+            total: filteredTests.length
           };
         } else if (url.includes('/questions')) {
           return {
