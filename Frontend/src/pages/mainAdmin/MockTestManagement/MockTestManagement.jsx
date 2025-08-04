@@ -114,7 +114,12 @@ const MockTestManagement = () => {
         throw new Error(data?.message || 'API returned invalid data');
       }
     } catch (error) {
-      console.warn('Backend unavailable, using mock data:', error.message);
+      console.warn('🔄 Backend questions endpoint unavailable, using mock data:', error.message);
+
+      if (error.message.includes('HTML instead of JSON')) {
+        console.log('📍 Admin mock test questions endpoint not implemented - using comprehensive mock data');
+      }
+
       // Set mock data for development
       setQuestions([
         {
