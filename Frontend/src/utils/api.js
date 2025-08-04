@@ -393,6 +393,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             total: filteredTests.length
           };
         } else if (url.includes('/questions')) {
+          console.log('🎯 Returning mock questions data');
           const sectionFilter = new URLSearchParams(url.split('?')[1] || '').get('section');
 
           const allQuestions = [];
