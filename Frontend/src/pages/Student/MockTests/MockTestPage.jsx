@@ -38,15 +38,12 @@ const MockTestPage = () => {
         category: filters.category !== 'all' ? filters.category : ''
       });
 
-      const response = await fetch(`/api/mock-tests/series?${queryParams}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      // Import the API utility function
+      const { fetchWithErrorHandling } = await import('../../../utils/api');
+      const data = await fetchWithErrorHandling(`/api/mock-tests/series?${queryParams}`);
 
-      const data = await response.json();
       if (data.success) {
-        setMockTestSeries(data.series || []);
+        setMockTestSeries(data.series || data.data || []);
       } else {
         console.error('Failed to fetch mock test series:', data.message);
         setMockTestSeries([]);
