@@ -177,6 +177,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
 
         // Handle different admin endpoints
         if (url.includes('/series')) {
+          console.log('🎯 Returning mock series data with', 5, 'series');
           return {
             success: true,
             series: [
