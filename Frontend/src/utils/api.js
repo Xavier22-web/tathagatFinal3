@@ -104,6 +104,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
     });
 
     clearTimeout(timeoutId);
+    console.log('📡 Response received:', response.status, response.statusText, 'for', url);
 
     // Try to parse JSON first, then handle errors
     let responseData;
