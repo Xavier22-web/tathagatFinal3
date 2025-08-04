@@ -46,6 +46,28 @@ const MOCK_DATA = {
   },
   mockTests: {
     success: true,
+    series: [
+      {
+        _id: '507f1f77bcf86cd799439013',
+        title: 'CAT Mock Test Series 2024',
+        description: 'Complete mock test series for CAT preparation',
+        category: 'CAT',
+        totalTests: 10,
+        difficulty: 'Mixed',
+        published: true,
+        createdAt: '2024-01-01T00:00:00.000Z'
+      },
+      {
+        _id: '507f1f77bcf86cd799439014',
+        title: 'IPMAT Mock Test Series 2024',
+        description: 'Comprehensive IPMAT preparation test series',
+        category: 'IPMAT',
+        totalTests: 8,
+        difficulty: 'Intermediate',
+        published: true,
+        createdAt: '2024-01-01T00:00:00.000Z'
+      }
+    ],
     data: [
       {
         _id: '507f1f77bcf86cd799439013',
