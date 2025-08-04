@@ -407,6 +407,255 @@ const MockTestManagement = () => {
     );
   };
 
+  const CreateTestModal = () => {
+    const [formData, setFormData] = useState({
+      title: '',
+      description: '',
+      seriesId: selectedSeriesId || '',
+      duration: 180,
+      totalQuestions: 100,
+      sections: [
+        { name: 'VARC', questions: 34, duration: 60 },
+        { name: 'DILR', questions: 32, duration: 60 },
+        { name: 'QA', questions: 34, duration: 60 }
+      ],
+      instructions: '',
+      difficulty: 'Medium',
+      negativeMarking: true,
+      positiveMarks: 3,
+      negativeMarks: -1
+    });
+    const [submitting, setSubmitting] = useState(false);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setSubmitting(true);
+
+      try {
+        const adminToken = localStorage.getItem('adminToken');
+        const response = await fetch('/api/admin/mock-tests/tests', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${adminToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          alert('Mock test created successfully!');
+          setShowCreateModal(false);
+          setFormData({
+            title: '',
+            description: '',
+            seriesId: selectedSeriesId || '',
+            duration: 180,
+            totalQuestions: 100,
+            sections: [
+              { name: 'VARC', questions: 34, duration: 60 },
+              { name: 'DILR', questions: 32, duration: 60 },
+              { name: 'QA', questions: 34, duration: 60 }
+            ],
+            instructions: '',
+            difficulty: 'Medium',
+            negativeMarking: true,
+            positiveMarks: 3,
+            negativeMarks: -1
+          });
+          fetchTests();
+        } else {
+          alert(data.message || 'Failed to create test');
+        }
+      } catch (error) {
+        console.error('Error creating test:', error);
+        alert('Failed to create test');
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    const updateSection = (index, field, value) => {
+      const updatedSections = [...formData.sections];
+      updatedSections[index] = { ...updatedSections[index], [field]: value };
+      setFormData(prev => ({ ...prev, sections: updatedSections }));
+    };
+
+    return (
+      <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
+        <div className="modal-content large-modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3>Create Mock Test</h3>
+            <button onClick={() => setShowCreateModal(false)} className="close-btn">×</button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="create-form">
+            <div className="form-group">
+              <label>Test Title *</label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="e.g., Mock Test 1"
+                required
+                maxLength={100}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Series *</label>
+              <select
+                value={formData.seriesId}
+                onChange={(e) => setFormData(prev => ({ ...prev, seriesId: e.target.value }))}
+                required
+              >
+                <option value="">Select Series</option>
+                {series.map(s => (
+                  <option key={s._id} value={s._id}>{s.title}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Description</label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Brief description of the mock test"
+                rows={3}
+                maxLength={500}
+              />
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Duration (Minutes) *</label>
+                <input
+                  type="number"
+                  value={formData.duration}
+                  onChange={(e) => setFormData(prev => ({ ...prev, duration: parseInt(e.target.value) || 180 }))}
+                  min="60"
+                  max="300"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Total Questions *</label>
+                <input
+                  type="number"
+                  value={formData.totalQuestions}
+                  onChange={(e) => setFormData(prev => ({ ...prev, totalQuestions: parseInt(e.target.value) || 100 }))}
+                  min="50"
+                  max="200"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Difficulty *</label>
+                <select
+                  value={formData.difficulty}
+                  onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value }))}
+                  required
+                >
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                  <option value="Mixed">Mixed</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="sections-config">
+              <h4>Sections Configuration</h4>
+              {formData.sections.map((section, index) => (
+                <div key={index} className="section-row">
+                  <div className="form-group">
+                    <label>{section.name} Questions</label>
+                    <input
+                      type="number"
+                      value={section.questions}
+                      onChange={(e) => updateSection(index, 'questions', parseInt(e.target.value) || 0)}
+                      min="0"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>{section.name} Duration (Min)</label>
+                    <input
+                      type="number"
+                      value={section.duration}
+                      onChange={(e) => updateSection(index, 'duration', parseInt(e.target.value) || 0)}
+                      min="0"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Positive Marks</label>
+                <input
+                  type="number"
+                  value={formData.positiveMarks}
+                  onChange={(e) => setFormData(prev => ({ ...prev, positiveMarks: parseInt(e.target.value) || 3 }))}
+                  min="1"
+                  max="5"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Negative Marks</label>
+                <input
+                  type="number"
+                  value={formData.negativeMarks}
+                  onChange={(e) => setFormData(prev => ({ ...prev, negativeMarks: parseInt(e.target.value) || -1 }))}
+                  max="0"
+                />
+              </div>
+
+              <div className="form-group checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={formData.negativeMarking}
+                    onChange={(e) => setFormData(prev => ({ ...prev, negativeMarking: e.target.checked }))}
+                  />
+                  Enable Negative Marking
+                </label>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Instructions</label>
+              <textarea
+                value={formData.instructions}
+                onChange={(e) => setFormData(prev => ({ ...prev, instructions: e.target.value }))}
+                placeholder="Special instructions for this test"
+                rows={4}
+                maxLength={1000}
+              />
+            </div>
+
+            <div className="form-actions">
+              <button type="button" onClick={() => setShowCreateModal(false)} className="cancel-btn">
+                Cancel
+              </button>
+              <button type="submit" disabled={submitting} className="submit-btn">
+                {submitting ? 'Creating...' : 'Create Test'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
   const SeriesCard = ({ series: seriesItem }) => (
     <div className="management-card">
       <div className="card-header">
