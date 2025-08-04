@@ -105,13 +105,26 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
 
     // Try to parse JSON first, then handle errors
     let responseData;
+    let parseSuccess = false;
     try {
-      responseData = await response.json();
+      const text = await response.text();
+      if (!text || text.trim() === '') {
+        throw new Error('Empty response body');
+      }
+
+      // Check if response looks like HTML (common when backend routes don't exist)
+      if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+        throw new Error('Received HTML instead of JSON - endpoint may not exist');
+      }
+
+      responseData = JSON.parse(text);
+      parseSuccess = true;
     } catch (parseError) {
+      console.warn('JSON parsing failed:', parseError.message);
       // If JSON parsing fails, create a basic error response
       responseData = {
         success: false,
-        message: `HTTP ${response.status}: ${response.statusText}`
+        message: `HTTP ${response.status}: ${parseError.message || response.statusText}`
       };
     }
 
