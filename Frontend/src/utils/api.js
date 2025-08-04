@@ -139,6 +139,67 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
       } else if (url.includes('/api/mock-tests/series')) {
         console.log('🔄 Returning mock data for mock test series');
         return MOCK_DATA.mockTests;
+      } else if (url.includes('/api/admin/mock-tests/series')) {
+        console.log('🔄 Returning mock data for admin mock test series');
+        return {
+          success: true,
+          series: [
+            {
+              _id: '1',
+              title: 'CAT 2024 Mock Test Series',
+              description: 'Complete CAT preparation with 10 mock tests',
+              category: 'CAT',
+              isPublished: true,
+              actualTestCount: 10,
+              enrolledCount: 245,
+              validity: 365,
+              price: 2999,
+              tags: ['CAT', 'Mock Tests', '2024']
+            }
+          ]
+        };
+      } else if (url.includes('/api/admin/mock-tests/tests')) {
+        console.log('🔄 Returning mock data for admin mock tests');
+        return {
+          success: true,
+          tests: [
+            {
+              _id: '1',
+              title: 'Mock Test 1',
+              description: 'First practice test with mixed difficulty',
+              seriesId: '1',
+              duration: 180,
+              totalQuestions: 100,
+              difficulty: 'Medium',
+              isActive: true,
+              attemptCount: 156,
+              positiveMarks: 3,
+              negativeMarks: -1,
+              sections: [
+                { name: 'VARC', questions: 34, duration: 60 },
+                { name: 'DILR', questions: 32, duration: 60 },
+                { name: 'QA', questions: 34, duration: 60 }
+              ]
+            }
+          ]
+        };
+      } else if (url.includes('/api/admin/mock-tests/questions')) {
+        console.log('🔄 Returning mock data for admin mock test questions');
+        return {
+          success: true,
+          questions: [
+            {
+              _id: '1',
+              questionText: 'Read the following passage and answer the question that follows...',
+              section: 'VARC',
+              questionType: 'Multiple Choice',
+              difficulty: 'Medium',
+              topic: 'Reading Comprehension',
+              marks: { positive: 3, negative: -1 },
+              options: ['Option A', 'Option B', 'Option C', 'Option D']
+            }
+          ]
+        };
       } else if (url.includes('/api/dev/login')) {
         return MOCK_DATA.devLogin;
       } else if (url.includes('/api/health')) {
