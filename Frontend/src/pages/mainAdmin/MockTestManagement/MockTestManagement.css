@@ -1462,3 +1462,139 @@
     justify-content: center;
   }
 }
+
+/* Question Creation Form Styles */
+.options-section {
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  background: #f8fafc;
+}
+
+.options-section h4 {
+  color: #374151;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.option-row {
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+}
+
+.option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.option-header label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.option-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.correct-answer-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #059669;
+  font-weight: 500;
+}
+
+.correct-answer-label input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #059669;
+}
+
+.remove-option-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-option-btn:hover {
+  background: #fecaca;
+  border-color: #f87171;
+}
+
+.add-option-btn {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 2px dashed #93c5fd;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.add-option-btn:hover {
+  background: #bfdbfe;
+  border-color: #60a5fa;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* Enhanced Question Card */
+.question-info h4 {
+  color: #2d3748;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.question-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.detail-item {
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-size: 13px;
+}
+
+.detail-item strong {
+  color: #374151;
+  font-weight: 600;
+}
+
+/* Modal enhancements for questions */
+.large-modal .modal-content {
+  max-width: 900px;
+  max-height: 95vh;
+}
