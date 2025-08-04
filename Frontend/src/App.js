@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import axios from "axios";
+import DevNotification from "./components/DevNotification/DevNotification";
 
 
 
@@ -335,6 +336,7 @@ const AppContent = () => {
 const App = () => {
   return (
     <ErrorBoundary>
+      <DevNotification />
       <BrowserRouter>
         <AppContent />
       </BrowserRouter>

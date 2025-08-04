@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MockTestPage.css';
+import { fetchWithErrorHandling } from '../../../utils/api';
 import {
   FiClock,
   FiUsers,
@@ -38,15 +39,10 @@ const MockTestPage = () => {
         category: filters.category !== 'all' ? filters.category : ''
       });
 
-      const response = await fetch(`/api/mock-tests/series?${queryParams}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const data = await fetchWithErrorHandling(`/api/mock-tests/series?${queryParams}`);
 
-      const data = await response.json();
       if (data.success) {
-        setMockTestSeries(data.series || []);
+        setMockTestSeries(data.series || data.data || []);
       } else {
         console.error('Failed to fetch mock test series:', data.message);
         setMockTestSeries([]);
