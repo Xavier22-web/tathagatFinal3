@@ -147,67 +147,109 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
       } else if (url.includes('/api/mock-tests/series')) {
         console.log('🔄 Returning mock data for mock test series');
         return MOCK_DATA.mockTests;
-      } else if (url.includes('/api/admin/mock-tests/series')) {
-        console.log('🔄 Returning mock data for admin mock test series');
-        return {
-          success: true,
-          series: [
-            {
-              _id: '1',
-              title: 'CAT 2024 Mock Test Series',
-              description: 'Complete CAT preparation with 10 mock tests',
-              category: 'CAT',
-              isPublished: true,
-              actualTestCount: 10,
-              enrolledCount: 245,
-              validity: 365,
-              price: 2999,
-              tags: ['CAT', 'Mock Tests', '2024']
-            }
-          ]
-        };
-      } else if (url.includes('/api/admin/mock-tests/tests')) {
-        console.log('🔄 Returning mock data for admin mock tests');
-        return {
-          success: true,
-          tests: [
-            {
-              _id: '1',
-              title: 'Mock Test 1',
-              description: 'First practice test with mixed difficulty',
-              seriesId: '1',
-              duration: 180,
-              totalQuestions: 100,
-              difficulty: 'Medium',
-              isActive: true,
-              attemptCount: 156,
-              positiveMarks: 3,
-              negativeMarks: -1,
-              sections: [
-                { name: 'VARC', questions: 34, duration: 60 },
-                { name: 'DILR', questions: 32, duration: 60 },
-                { name: 'QA', questions: 34, duration: 60 }
-              ]
-            }
-          ]
-        };
-      } else if (url.includes('/api/admin/mock-tests/questions')) {
-        console.log('🔄 Returning mock data for admin mock test questions');
-        return {
-          success: true,
-          questions: [
-            {
-              _id: '1',
-              questionText: 'Read the following passage and answer the question that follows...',
-              section: 'VARC',
-              questionType: 'Multiple Choice',
-              difficulty: 'Medium',
-              topic: 'Reading Comprehension',
-              marks: { positive: 3, negative: -1 },
-              options: ['Option A', 'Option B', 'Option C', 'Option D']
-            }
-          ]
-        };
+      } else if (url.includes('/api/admin/mock-tests/series') || url.includes('/api/admin/mock-tests/questions') || url.includes('/api/admin/mock-tests/tests')) {
+        console.log('🔄 Returning mock data for admin mock test endpoints:', url);
+
+        // Handle different admin endpoints
+        if (url.includes('/series')) {
+          return {
+            success: true,
+            series: [
+              {
+                _id: '1',
+                title: 'CAT 2024 Mock Test Series',
+                description: 'Complete CAT preparation with 10 mock tests',
+                category: 'CAT',
+                isPublished: true,
+                actualTestCount: 10,
+                enrolledCount: 245,
+                validity: 365,
+                price: 2999,
+                tags: ['CAT', 'Mock Tests', '2024']
+              },
+              {
+                _id: '2',
+                title: 'IPMAT 2024 Series',
+                description: 'IPMAT preparation with comprehensive tests',
+                category: 'IPMAT',
+                isPublished: false,
+                actualTestCount: 8,
+                enrolledCount: 89,
+                validity: 180,
+                price: 1999,
+                tags: ['IPMAT', 'Beginner']
+              }
+            ]
+          };
+        } else if (url.includes('/tests')) {
+          return {
+            success: true,
+            tests: [
+              {
+                _id: '1',
+                title: 'Mock Test 1',
+                description: 'First practice test with mixed difficulty',
+                seriesId: '1',
+                duration: 180,
+                totalQuestions: 100,
+                difficulty: 'Medium',
+                isActive: true,
+                attemptCount: 156,
+                positiveMarks: 3,
+                negativeMarks: -1,
+                sections: [
+                  { name: 'VARC', questions: 34, duration: 60 },
+                  { name: 'DILR', questions: 32, duration: 60 },
+                  { name: 'QA', questions: 34, duration: 60 }
+                ]
+              },
+              {
+                _id: '2',
+                title: 'Mock Test 2',
+                description: 'Advanced level practice test',
+                seriesId: '1',
+                duration: 180,
+                totalQuestions: 100,
+                difficulty: 'Hard',
+                isActive: true,
+                attemptCount: 89,
+                positiveMarks: 3,
+                negativeMarks: -1,
+                sections: [
+                  { name: 'VARC', questions: 34, duration: 60 },
+                  { name: 'DILR', questions: 32, duration: 60 },
+                  { name: 'QA', questions: 34, duration: 60 }
+                ]
+              }
+            ]
+          };
+        } else if (url.includes('/questions')) {
+          return {
+            success: true,
+            questions: [
+              {
+                _id: '1',
+                questionText: 'Read the following passage and answer the question that follows. The rapid advancement of artificial intelligence...',
+                section: 'VARC',
+                questionType: 'Multiple Choice',
+                difficulty: 'Medium',
+                topic: 'Reading Comprehension',
+                marks: { positive: 3, negative: -1 },
+                options: ['Option A', 'Option B', 'Option C', 'Option D']
+              },
+              {
+                _id: '2',
+                questionText: 'A company manufactures two types of products A and B. The profit from product A is 40% and from product B is 60%...',
+                section: 'QA',
+                questionType: 'Multiple Choice',
+                difficulty: 'Hard',
+                topic: 'Profit and Loss',
+                marks: { positive: 3, negative: -1 },
+                options: ['150', '200', '250', '300']
+              }
+            ]
+          };
+        }
       } else if (url.includes('/api/dev/login')) {
         return MOCK_DATA.devLogin;
       } else if (url.includes('/api/health')) {
