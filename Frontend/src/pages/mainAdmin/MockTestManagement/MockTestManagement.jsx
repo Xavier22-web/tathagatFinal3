@@ -520,7 +520,7 @@ const MockTestManagement = () => {
           body: JSON.stringify(formData)
         });
 
-        if (data.success) {
+        if (data && data.success) {
           alert('Mock test created successfully!');
           setShowCreateModal(false);
           setFormData({
@@ -542,7 +542,7 @@ const MockTestManagement = () => {
           });
           fetchTests();
         } else {
-          alert(data.message || 'Failed to create test');
+          throw new Error(data?.message || 'Failed to create test');
         }
       } catch (error) {
         console.error('Error creating test:', error);
