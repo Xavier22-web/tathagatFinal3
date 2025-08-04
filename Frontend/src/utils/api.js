@@ -157,27 +157,73 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
             series: [
               {
                 _id: '1',
-                title: 'CAT 2024 Mock Test Series',
-                description: 'Complete CAT preparation with 10 mock tests',
+                title: 'CAT 2024 Foundation Series',
+                description: 'Complete foundation course with 12 progressive mock tests for CAT aspirants',
                 category: 'CAT',
                 isPublished: true,
-                actualTestCount: 10,
-                enrolledCount: 245,
+                actualTestCount: 12,
+                enrolledCount: 1245,
                 validity: 365,
-                price: 2999,
-                tags: ['CAT', 'Mock Tests', '2024']
+                price: 3999,
+                tags: ['CAT', 'Foundation', '2024', 'Beginner'],
+                freeTests: 2,
+                createdAt: '2024-01-15T00:00:00.000Z'
               },
               {
                 _id: '2',
-                title: 'IPMAT 2024 Series',
-                description: 'IPMAT preparation with comprehensive tests',
+                title: 'CAT 2024 Advanced Series',
+                description: 'Advanced level preparation with 15 challenging mock tests designed by IIM alumni',
+                category: 'CAT',
+                isPublished: true,
+                actualTestCount: 15,
+                enrolledCount: 856,
+                validity: 365,
+                price: 4999,
+                tags: ['CAT', 'Advanced', '2024', 'IIM Level'],
+                freeTests: 1,
+                createdAt: '2024-02-01T00:00:00.000Z'
+              },
+              {
+                _id: '3',
+                title: 'IPMAT 2024 Complete Series',
+                description: 'Comprehensive IPMAT preparation with 10 full-length tests covering all sections',
                 category: 'IPMAT',
-                isPublished: false,
-                actualTestCount: 8,
-                enrolledCount: 89,
+                isPublished: true,
+                actualTestCount: 10,
+                enrolledCount: 432,
                 validity: 180,
+                price: 2499,
+                tags: ['IPMAT', 'Complete', '2024', 'IIM Indore'],
+                freeTests: 2,
+                createdAt: '2024-01-20T00:00:00.000Z'
+              },
+              {
+                _id: '4',
+                title: 'XAT 2024 Mastery Series',
+                description: 'Specialized XAT preparation with 12 tests focusing on Decision Making and Essay Writing',
+                category: 'XAT',
+                isPublished: true,
+                actualTestCount: 12,
+                enrolledCount: 289,
+                validity: 270,
+                price: 3499,
+                tags: ['XAT', 'Mastery', '2024', 'XLRI'],
+                freeTests: 1,
+                createdAt: '2024-02-10T00:00:00.000Z'
+              },
+              {
+                _id: '5',
+                title: 'SNAP 2024 Success Series',
+                description: 'Quick and effective SNAP preparation with 10 targeted tests for top B-schools',
+                category: 'SNAP',
+                isPublished: false,
+                actualTestCount: 10,
+                enrolledCount: 156,
+                validity: 150,
                 price: 1999,
-                tags: ['IPMAT', 'Beginner']
+                tags: ['SNAP', 'Success', '2024', 'Symbiosis'],
+                freeTests: 3,
+                createdAt: '2024-02-15T00:00:00.000Z'
               }
             ]
           };
