@@ -332,7 +332,7 @@ const MockTestManagement = () => {
           })
         });
 
-        if (data.success) {
+        if (data && data.success) {
           alert('Mock test series created successfully!');
           setShowCreateModal(false);
           setFormData({
@@ -346,7 +346,7 @@ const MockTestManagement = () => {
           });
           fetchSeries();
         } else {
-          alert(data.message || 'Failed to create series');
+          throw new Error(data?.message || 'Failed to create series');
         }
       } catch (error) {
         console.error('Error creating series:', error);
