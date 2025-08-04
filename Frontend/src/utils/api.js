@@ -21,10 +21,57 @@ console.log('API Configuration:', {
   finalApiUrl: `${API_BASE_URL}/api/courses/student/published-courses`
 });
 
-// Generic fetch wrapper with error handling
+// Development mock data
+const MOCK_DATA = {
+  courses: {
+    success: true,
+    courses: [
+      {
+        _id: '507f1f77bcf86cd799439011',
+        name: 'CAT 2026',
+        description: 'Complete preparation package for CAT 2026',
+        published: true,
+        price: 9999,
+        duration: '12 months'
+      },
+      {
+        _id: '507f1f77bcf86cd799439012',
+        name: 'IPMAT 2027',
+        description: 'Integrated Program in Management Aptitude Test preparation',
+        published: true,
+        price: 7999,
+        duration: '10 months'
+      }
+    ]
+  },
+  mockTests: {
+    success: true,
+    data: [
+      {
+        _id: '507f1f77bcf86cd799439013',
+        title: 'CAT Mock Test 1',
+        description: 'Complete mock test for CAT preparation',
+        duration: 180,
+        totalQuestions: 100
+      }
+    ]
+  },
+  devLogin: {
+    success: true,
+    token: 'dev_token_12345',
+    user: {
+      id: '507f1f77bcf86cd799439011',
+      email: 'dev@test.com',
+      name: 'Development User',
+      role: 'student'
+    }
+  }
+};
+
+// Generic fetch wrapper with error handling and development fallback
 export const fetchWithErrorHandling = async (url, options = {}) => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for faster development
 
   try {
     const response = await fetch(url, {
@@ -55,6 +102,33 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
     return responseData;
   } catch (error) {
     clearTimeout(timeoutId);
+
+    // In development, if backend is not available, return mock data
+    if (process.env.NODE_ENV === 'development' &&
+        (error.name === 'AbortError' ||
+         error instanceof TypeError ||
+         error.message.includes('fetch'))) {
+
+      console.warn('🔄 Backend unavailable, using mock data for:', url);
+
+      // Return appropriate mock data based on URL
+      if (url.includes('/api/courses/student/published-courses')) {
+        return MOCK_DATA.courses;
+      } else if (url.includes('/api/mock-tests/series')) {
+        return MOCK_DATA.mockTests;
+      } else if (url.includes('/api/dev/login')) {
+        return MOCK_DATA.devLogin;
+      } else if (url.includes('/api/health')) {
+        return { status: 'ok', message: 'Mock health check' };
+      }
+
+      // Default mock response
+      return {
+        success: true,
+        message: 'Mock response - backend unavailable',
+        data: []
+      };
+    }
 
     if (error.name === 'AbortError') {
       throw new Error('Request timeout - backend server may be unavailable');
