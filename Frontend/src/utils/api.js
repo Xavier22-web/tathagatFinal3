@@ -164,6 +164,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
          error.message.includes('JSON parsing failed'))) {
 
       console.warn('🔄 Backend unavailable, using mock data for:', url);
+      console.warn('Error details:', error.message);
 
       // Return appropriate mock data based on URL
       if (url.includes('/api/courses/student/published-courses')) {
