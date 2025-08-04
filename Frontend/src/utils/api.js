@@ -96,7 +96,7 @@ export const fetchWithErrorHandling = async (url, options = {}) => {
 
   // IMMEDIATE FALLBACK - Check for admin endpoints and demo login FIRST
   const isAdminMockTestUrl = url.includes('/api/admin/mock-tests/');
-  const isDemoLoginUrl = url.includes('/api/admin/demo-login') || url.includes('/demo-login');
+  const isDemoLoginUrl = url.includes('/api/admin/demo-login') || url.includes('/demo-login') || url.includes('/api/dev/login');
   const isAdminUrl = url.includes('/api/admin/');
 
   console.log('🔍 URL Analysis:', {
