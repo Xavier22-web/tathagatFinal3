@@ -60,6 +60,7 @@ const MockTestManagement = () => {
 
       if (error.message.includes('HTML instead of JSON')) {
         console.log('📍 Admin mock test series endpoint not implemented - using comprehensive mock data');
+        setDemoMode(true);
       }
 
       // Set mock data for development
